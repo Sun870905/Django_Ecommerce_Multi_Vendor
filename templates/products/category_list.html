@@ -1,0 +1,14 @@
+{% extends 'base.html' %}
+<div>{% block title %}{{ category.title }}{% endblock title %}</div>
+<div>
+	{% block content %}
+	<div class="columns is-multiline mb-6">
+		<div class="column is-12 has-text-centered mt-6 mb-6">
+			<h2 class="is-size-3">{{ category.title }}</h2>
+		</div>
+		{% for product in category.products.all %}
+		<hr />
+		{% include 'products/list.html' %} {% endfor %}
+	</div>
+	{% endblock content %}
+</div>

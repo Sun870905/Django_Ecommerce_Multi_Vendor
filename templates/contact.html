@@ -1,0 +1,29 @@
+{% extends 'base.html' %}{% load bulma_tags %}
+<div>{% block title %}Contact{% endblock title %}</div>
+<div>
+	{% block content %}
+	<h1 class="title">Leave a feedback!</h1>
+	<form action="." method="post" id="file-js">
+		{% csrf_token %} {% if form.non_field_errors %}
+		<div class="notification is-danger">
+			<button class="delete"></button>
+			{{ form.non_field_errors }}
+		</div>
+		{% endif %} {% if form.errors %}
+		<div class="notification is-danger">
+			<button class="delete"></button>
+			<ul>
+				{% for field in form %}{% for error in field.errors %}
+				<li><strong>{{ field.label }}: </strong>{{ error }}</li>
+				{% endfor %}{% endfor %}
+			</ul>
+		</div>
+		{% endif %} {{ form|bulma }}
+		<div class="field">
+			<div class="control">
+				<button class="button is-success">Submit</button>
+			</div>
+		</div>
+	</form>
+	{% endblock content %}
+</div>

@@ -1,0 +1,30 @@
+[tool.poetry]
+authors   = ["Mugdha Arunim Ahmed <mugdhaarunimahmed2017@gmail.com>"]
+description = ""
+license   = 'MIT'
+name      = "multi-vendor_e-commerce"
+readme    = 'README.md'
+repository = 'https://github.com/maxelite1520/E-commerce-1'
+version   = "0.1.0"
+
+
+                [tool.poetry.dependencies]
+                Django      = "^3.2.5"
+                Pillow      = "^8.3.0"
+                argon2-cffi = "^20.1.0"
+                django-bulma = "^0.8.2"
+                django-dotenv = "^1.4.2"
+                python      = "^3.9"
+                stripe      = "^2.58.0"
+                gunicorn = "^20.1.0"
+                whitenoise = "^5.2.0"
+
+                [tool.poetry.dev-dependencies]
+                autopep8               = "^1.5.7"
+                django-debug-toolbar   = "^3.2.1"
+                django-livereload-server = "^0.3.2"
+                pep8                   = "^1.7.1"
+
+[build-system]
+build-backend = "poetry.core.masonry.api"
+requires    = ["poetry-core>=1.0.0"]

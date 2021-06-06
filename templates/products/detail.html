@@ -1,0 +1,97 @@
+{% extends 'base.html' %}
+<div>{% block title %}{{ product.title }}{% endblock title %}</div>
+<div>
+	{% block content %}
+	<div id="app">
+		{% if product.image %}
+		<figure class="image is-4by3 mb-6">
+			<img :src="mainImage.image" />
+		</figure>
+		{% endif %} {% if product.images.all %}
+		<hr />
+		<div class="columns">
+			<div class="column is-2" v-for="image in images" :key="image.id">
+				<img :src="image.thumbnail" @click="changeMainImage(image)" />
+			</div>
+		</div>
+		{% endif %}
+		<h1 class="title">{{ product.title }}</h1>
+		<h2 class="subtitle">$ {{ product.price }}</h2>
+		<p class="mb-6">
+			<span class="tag is-dark">{{ product.vendor.name }}</span>
+		</p>
+		<p>{{ product.description }}</p>
+		{% if messages %}
+		<hr />
+		{% for message in messages %}
+		<div class="notification is-success is-toast">
+			<button class="delete"></button>
+			{{ message }}
+		</div>
+		{% endfor %}{% endif %}
+		<br />
+		<form action="." method="post">
+			{% csrf_token %}
+			<div class="field has-addons">
+				<div class="control">
+					<input
+						type="number"
+						name="quantity"
+						value="1"
+						class="input"
+						min="1"
+					/>
+				</div>
+				<div class="control">
+					<button class="button is-primary">
+						<span class="icon"><i class="fas fa-shopping-cart"></i></span>
+						<span class="icon-text">Add to Cart</span>
+					</button>
+				</div>
+			</div>
+		</form>
+		{% if similar_products %}
+		<hr />
+		<div class="colimns is-multiline mb-6">
+			<div class="column is-12 has-text-centered mt-6 mb-6">
+				<h2 class="is-size-3">Similar Products</h2>
+			</div>
+			{% for product in similar_products %} {% include 'products/list.html' %}
+			{% endfor %}
+		</div>
+		{% endif %}
+	</div>
+	{% endblock content %}
+</div>
+<div>
+	{% block script %}
+	<div>
+		{{ images_string|json_script:'json-images_string' }}
+		<script src="https://unpkg.com/vue@next"></script>
+		<script>
+			const ProductApp = {
+				data() {
+					return {
+						mainImage: "",
+						images: {},
+					};
+				},
+				mounted() {
+					this.images = JSON.parse(
+						JSON.parse(
+							document.getElementById("json-images_string").textContent
+						)
+					);
+					this.mainImage = this.images[0];
+				},
+				methods: {
+					changeMainImage(image) {
+						this.mainImage = image;
+					},
+				},
+			};
+			Vue.createApp(ProductApp).mount("#app");
+		</script>
+	</div>
+	{% endblock script %}
+</div>

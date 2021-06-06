@@ -1,0 +1,32 @@
+{% extends 'base.html' %} {% load bulma_tags %}
+<div>{% block title %}Become Vendor{% endblock title %}</div>
+<div>
+	{% block content %}
+	<h1 class="title">Become a Vendor</h1>
+	<form action="." method="post">
+		{% csrf_token %} {% if form.non_field_errors %}
+		<div class="notification is-danger">
+			<button class="delete"></button>
+			{{ form.non_field_errors }}
+		</div>
+		{% endif %} {% if form.errors %}
+		<div class="notification is-danger">
+			<button class="delete"></button>
+			<ul>
+				{% for field in form %}{% for error in field.errors %}
+				<li><strong>{{ field.label }}: </strong>{{ error }}</li>
+				{% endfor %}{% endfor %}
+			</ul>
+		</div>
+		{% endif %}{{ form|bulma }}
+		<div class="field">
+			<div class="control">
+				<button class="button is-success">Submit</button>
+			</div>
+		</div>
+	</form>
+	<hr />
+	<h2 class="subtitle">Already have an account?</h2>
+	<a href="{% url 'login' %}">Login</a>
+	{% endblock content %}
+</div>

@@ -1,0 +1,121 @@
+{% extends 'base.html' %}
+<div>{% block title %}Vendor Admin{% endblock title %}</div>
+<div>
+	{% block content %}
+	<div class="container">
+		<h1 class="title">Vendor Admin - {{ vendor.name }}</h1>
+		<p><strong>Balance:</strong> $ {{ vendor.get_balance }}</p>
+		<p><strong>Amount Paid:</strong> $ {{ vendor.get_paid_amount }}</p>
+		<br />
+		<div class="buttons">
+			<a href="{% url 'edit_vendor' %}" class="button is-info">
+				<span><i class="far fa-edit"></i></span>
+				<span>Edit</span>
+			</a>
+			{% comment %} <a href="{% url 'delete_vendor' %}" class="button is-danger">
+				<span><i class="far fa-delete"></i></span>
+				<span>Edit</span>
+			</a> {% endcomment %}
+			<a href="{% url 'logout' %}" class="button is-danger">Logout</a>
+		</div>
+	</div>
+	<hr />
+	<div class="container">
+		<h2 class="is-size-3 mb-4">My Products</h2>
+		<a href="{% url 'add_product' %}" class="button is-success mb-6"
+			>Add a Product</a
+		>
+		{% if products %}
+		<table class="table is-fullwidth">
+			<thead>
+				<tr>
+					<th>Title</th>
+					<th>Price</th>
+					<th>Actions</th>
+				</tr>
+			</thead>
+			<tbody>
+				{% for product in products %}
+				<tr>
+					<td>
+						<a href="{% url 'product' product.category.slug product.slug %}"
+							>{{ product.title }}</a
+						>
+					</td>
+					<td>$ {{ product.price }}</td>
+					<td>
+						<a href="{% url 'edit_product' product.id %}">
+							<span><i class="far fa-edit"></i></span>
+							<span>Edit</span>
+						</a>
+						| 
+						<a href="{% url 'delete_product' product.id %}">
+							<span><i class="fas fa-trash"></i></span>
+							<span>Delete</span>
+						</a>
+					</td>
+				</tr>
+				{% endfor %}
+			</tbody>
+		</table>
+		{% else %}
+		<p>No products yet...</p>
+		{% endif %}
+	</div>
+	<hr />
+	<div class="container">
+		<h2 class="is-size-3 mb-4">Orders</h2>
+		{% if orders %} {% for order in orders %}
+		<div
+			class="
+				{% if order.fully_paid %}
+				has-background-success-light
+				{% else %}
+				has-background-info-light
+				{% endif %}
+				mb-2 p-4
+			"
+		>
+			<div class="columns is-multiline">
+				<div class="column is-6">
+					<h3 class="is-size-4">
+						#{{ order.id }} - {{ order.first_name }} {{ order.last_name }}
+					</h3>
+				</div>
+				<div class="column is-12">
+					<b>Name:</b> {{ order.first_name }} {{ order.last_name }}<br />
+					<b>Address:</b> {{ order.address }}<br />
+					<b>Zipcode and place:</b> {{ order.zipcode }} {{ order.place }}<br />
+					<b>E-mail:</b> {{ order.email }}<br />
+					<b>Phone:</b> {{ order.phone }}
+					<table class="table is-fullwidth mt-4">
+						<thead>
+							<tr>
+								<th>Title</th>
+								<th>Price</th>
+								<th>Quantity</th>
+								<th>Paid</th>
+								<th>Total</th>
+							</tr>
+						</thead>
+						<tbody>
+							{% for item in order.items.all %}
+							<tr>
+								{% if item.vendor == request.user.vendor %}
+								<td>{{ item.product.title }}</td>
+								<td>$ {{ item.product.price }}</td>
+								<td>{{ item.quantity }}</td>
+								<td>{{ item.vendor_paid|yesno:"Yes,No" }}</td>
+								<td>$ {{ item.get_total_price }}</td>
+								{% endif %}
+							</tr>
+							{% endfor %}
+						</tbody>
+					</table>
+				</div>
+			</div>
+		</div>
+		{% endfor %} {% endif %}
+	</div>
+	{% endblock content %}
+</div>

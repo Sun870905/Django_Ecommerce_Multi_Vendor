@@ -1,0 +1,28 @@
+{
+	"version": "2.0.0",
+	"tasks": [
+		{
+			"label": "Live Reload",
+			"command": "poetry run python manage.py livereload",
+			"type": "shell",
+			"presentation": {
+				"reveal": "silent",
+				"clear": true
+			},
+			"group": "none",
+			"problemMatcher": [],
+			"isBackground": true
+		},
+		{
+			"label": "Update Database",
+			"command": "poetry run python manage.py makemigrations && poetry run python manage.py migrate",
+			"type": "shell",
+			"presentation": {
+				"reveal": "silent",
+				"clear": true
+			},
+			"group": "none",
+			"problemMatcher": []
+		}
+	]
+}
